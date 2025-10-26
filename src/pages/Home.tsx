@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { 
   TrendingUp, Users, Award, BookOpen, CheckCircle, Star, 
-  Shield, Clock, Target, BarChart, DollarSign, 
+  Shield, Clock, Target, BarChart, IndianRupee, 
   Zap, Globe, HeadphonesIcon, Phone, Activity, 
   TrendingDown, ArrowUpRight, ArrowDownRight, Eye, X
 } from 'lucide-react';
@@ -115,9 +115,9 @@ const Home = () => {
           scale: 1,
           opacity: 1,
           rotationX: 0,
-          duration: prefersReducedMotion ? 0.1 : 2.5,
+          duration: prefersReducedMotion ? 0.1 : 2.0,
           snap: { innerText: 1 },
-          ease: prefersReducedMotion ? "none" : "back.out(1.7)",
+          ease: prefersReducedMotion ? "none" : "power2.out",
           stagger: prefersReducedMotion ? 0 : 0.2,
           scrollTrigger: {
             trigger: statsRef.current,
@@ -561,7 +561,7 @@ const Home = () => {
             </div>
             <div className="text-center">
               <div className="stat-icon bg-blue-800 p-4 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center animate-float">
-                <DollarSign className="h-10 w-10 text-white" />
+                <IndianRupee className="h-10 w-10 text-white" />
               </div>
               <div className="stat-number text-5xl font-bold text-white mb-2" data-count="15">0</div>
               <p className="text-blue-200 font-medium">Lakhs in Profits</p>
