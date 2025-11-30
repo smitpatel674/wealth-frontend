@@ -59,7 +59,12 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/v1/consultation/schedule-consultation', {
+      // Use production backend URL or proxy in development
+      const apiUrl = import.meta.env.PROD 
+        ? 'https://w-b-1-93g9.onrender.com/api/v1/consultation/schedule-consultation'
+        : '/api/v1/consultation/schedule-consultation';
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

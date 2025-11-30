@@ -59,7 +59,12 @@ const Home = () => {
         course_price: selectedCourse?.price
       };
       
-      const response = await fetch('/api/v1/enrollments/form', {
+      // Use production backend URL or proxy in development
+      const apiUrl = import.meta.env.PROD 
+        ? 'https://w-b-1-93g9.onrender.com/api/v1/enrollments/form'
+        : '/api/v1/enrollments/form';
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
