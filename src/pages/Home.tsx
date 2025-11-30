@@ -61,7 +61,7 @@ const Home = () => {
       
       // Use production backend URL or proxy in development
       const apiUrl = import.meta.env.PROD 
-        ? 'https://w-b-1-93g9.onrender.com/api/v1/enrollments/form'
+        ? 'https://w-b-2.onrender.com/api/v1/enrollments/form'
         : '/api/v1/enrollments/form';
       
       const response = await fetch(apiUrl, {
@@ -78,12 +78,20 @@ const Home = () => {
         setShowEnrollmentForm(false);
         setFormData({ name: '', city: '', phone: '', email: '' });
       } else {
-        const error = await response.json();
-        alert(`Error: ${error.detail || 'Failed to submit enrollment'}`);
+        // Try to parse JSON error, fall back to text; log for debugging
+        let errorText = '';
+        try {
+          const errorJson = await response.json();
+          errorText = errorJson.detail || JSON.stringify(errorJson);
+        } catch (parseErr) {
+          errorText = await response.text();
+        }
+        console.error('Enrollment submit failed', response.status, errorText);
+        alert(`Error submitting enrollment: ${errorText || 'Failed to submit enrollment'}`);
       }
-    } catch (error) {
-      console.error('Error submitting enrollment:', error);
-      alert('Failed to submit enrollment. Please try again.');
+    } catch (error: any) {
+      console.error('Error submitting enrollment (network/exception):', error);
+      alert(`Failed to submit enrollment. ${error?.message || ''} Please try again.`);
     }
   };
 

@@ -61,7 +61,7 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ isOpen, onClose }) => {
     try {
       // Use production backend URL or proxy in development
       const apiUrl = import.meta.env.PROD 
-        ? 'https://w-b-1-93g9.onrender.com/api/v1/consultation/schedule-consultation'
+        ? 'https://w-b-2.onrender.com/api/v1/consultation/schedule-consultation'
         : '/api/v1/consultation/schedule-consultation';
       
       const response = await fetch(apiUrl, {
