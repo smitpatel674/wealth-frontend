@@ -204,7 +204,7 @@ const Contact = () => {
                         value={formData.phone}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                        placeholder="(555) 123-4567"
+                        placeholder="+91 99999 99999"
                       />
                     </div>
 
@@ -276,9 +276,9 @@ const Contact = () => {
                 <div className="p-6">
                   <h4 className="font-semibold text-gray-800 mb-2">Transportation</h4>
                   <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• 5-minute walk from Wall St Station (4, 5, 6 trains)</li>
-                    <li>• 3-minute walk from Bowling Green Station (4, 5, 6 trains)</li>
-                    <li>• Parking available at nearby garages</li>
+                    <li>• 20-minutes from Airports Ahmedabad</li>
+                    <li>• 2km from Ring Road</li>
+                    <li>• Parking available</li>
                   </ul>
                 </div>
               </div>

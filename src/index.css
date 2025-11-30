@@ -45,11 +45,6 @@
     animation: gradient 3s ease infinite;
   }
   
-  .animate-scroll {
-    /* Ticker scroll speed slowed down */
-    animation: scroll 100s linear infinite;
-  }
-  
   .animate-data-flow {
     animation: data-flow 4s ease-in-out infinite;
   }
@@ -156,15 +151,6 @@
   }
 }
 
-@keyframes scroll {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
 @keyframes data-flow {
   0%, 100% {
     opacity: 0.3;
@@ -241,12 +227,6 @@ html {
 }
 
 /* Performance optimizations */
-.market-widget {
-  will-change: transform, box-shadow;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
 .feature-card {
   will-change: transform, box-shadow;
   transform: translateZ(0);
@@ -257,12 +237,6 @@ html {
   will-change: transform, background;
   transform: translateZ(0);
   backface-visibility: hidden;
-}
-
-/* GPU acceleration for smooth animations */
-.animate-scroll {
-  will-change: transform;
-  transform: translateZ(0);
 }
 
 .animate-float {
@@ -279,10 +253,6 @@ html {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-  
-  .animate-scroll {
-    animation: none !important;
   }
   
   .animate-float {

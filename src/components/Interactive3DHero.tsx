@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';
 
-const BACKEND_BASE = (import.meta as any).env?.VITE_BACKEND_URL || 'http://localhost:8000';
-
 const Interactive3DHero: React.FC = () => {
+  const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -11,83 +11,10 @@ const Interactive3DHero: React.FC = () => {
   const cameraGroupRef = useRef<THREE.Group | null>(null);
   const candlesGroupRef = useRef<THREE.Group | null>(null);
   const particlesGroupRef = useRef<THREE.Group | null>(null);
-  const tickerGroupRef = useRef<THREE.Group | null>(null);
   const animationRef = useRef<number | null>(null);
-  const [stockData, setStockData] = useState<{symbol:string; price:number; change:number}[]>([]);
-  const [lastUpdated, setLastUpdated] = useState<string>('');
-
-  function normalizeSymbol(sym: string): string {
-    if (!sym) return '';
-    return sym.replace(/-EQ$/i, '');
-  }
-
-  function mergeQuotes(list: any[]) {
-    const nowStr = new Date().toLocaleTimeString();
-    setStockData((prev) => {
-      const newStockData = [...prev];
-      list.forEach((q: any) => {
-        const rawSym = typeof q.symbol === 'string' ? q.symbol : '';
-        const sym = normalizeSymbol(rawSym);
-        const existingStockIndex = newStockData.findIndex(p => p.symbol === sym);
-        const price = typeof q.price === 'number' && q.price > 0 ? q.price : 0;
-        const change = typeof q.changePercent === 'number' ? q.changePercent : 0;
-
-        if (existingStockIndex > -1) {
-          newStockData[existingStockIndex] = { symbol: sym, price, change };
-        } else {
-          newStockData.push({ symbol: sym, price, change });
-        }
-      });
-      return newStockData;
-    });
-    setLastUpdated(nowStr);
-  }
-
-  useEffect(() => {
-    let abort = false;
-    const limit = 10; // NIFTY 50 stocks for 3D visualization
-
-    async function fetchNifty50Stocks() {
-      const paths = [`${BACKEND_BASE}/api/v1/market/live?limit=${limit}`, `/api/v1/market/live?limit=${limit}`];
-      let ok = false;
-      for (const url of paths) {
-        try {
-          const res = await fetch(url, { cache: 'no-cache' });
-          if (!res.ok) throw new Error('bad status');
-          const json = await res.json();
-          if (abort) return;
-          const list = Array.isArray(json?.quotes) ? json.quotes : [];
-          mergeQuotes(list);
-          ok = true;
-          break;
-        } catch (err) {
-          console.error('NIFTY 50 stocks fetch failed for', url, err);
-        }
-      }
-      if (!ok) {
-        // keep last values if backend is down
-      }
-    }
-
-    // Fetch initial NIFTY 50 stocks data
-    fetchNifty50Stocks();
-
-    // Set up periodic refresh every 15 seconds for 3D visualization
-    const intervalId = setInterval(() => {
-      if (!abort) {
-        fetchNifty50Stocks();
-      }
-    }, 15000);
-
-    return () => { 
-      abort = true; 
-      clearInterval(intervalId);
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // ========= Settings =========
-  const CANDLE_COUNT = 12; // Increased for 10 stocks
+  const CANDLE_COUNT = 12;
   const HORIZONTAL_SPREAD = 14; // Restored spread
   const VERTICAL_INVERT = true;
   const POINTER_STOP_MS = 200;
@@ -242,11 +169,6 @@ const Interactive3DHero: React.FC = () => {
     scene.add(particlesGroup);
     particlesGroupRef.current = particlesGroup;
 
-    // Group for ticker elements
-    const tickerGroup = new THREE.Group();
-    scene.add(tickerGroup);
-    tickerGroupRef.current = tickerGroup;
-
     // Create particle system for data streams
     function createParticleSystem() {
       const particleCount = 200;
@@ -290,56 +212,6 @@ const Interactive3DHero: React.FC = () => {
       particlesGroup.add(particles);
     }
 
-    // Create floating stock ticker elements
-    function createStockTicker() {
-      const tickerCount = 8;
-      for (let i = 0; i < tickerCount; i++) {
-        const tickerGroup = new THREE.Group();
-        
-        // Create ticker background
-        const bgGeometry = new THREE.PlaneGeometry(3, 0.8);
-        const bgMaterial = new THREE.MeshBasicMaterial({
-          color: 0x000000,
-          transparent: true,
-          opacity: 0.7
-        });
-        const bg = new THREE.Mesh(bgGeometry, bgMaterial);
-        tickerGroup.add(bg);
-
-        // Create price text (simplified as colored bars for performance)
-        const priceGeometry = new THREE.PlaneGeometry(1.5, 0.3);
-        const priceMaterial = new THREE.MeshBasicMaterial({
-          color: Math.random() > 0.5 ? 0x00ff00 : 0xff0000,
-          transparent: true,
-          opacity: 0.9
-        });
-        const priceBar = new THREE.Mesh(priceGeometry, priceMaterial);
-        priceBar.position.set(0.5, 0, 0.01);
-        tickerGroup.add(priceBar);
-
-        // Position tickers in a circle around the scene
-        const angle = (i / tickerCount) * Math.PI * 2;
-        const radius = 25;
-        tickerGroup.position.set(
-          Math.cos(angle) * radius,
-          Math.random() * 10 + 5,
-          Math.sin(angle) * radius
-        );
-        tickerGroup.rotation.y = angle + Math.PI;
-
-        tickerGroup.userData = {
-          basePosition: tickerGroup.position.clone(),
-          angle: angle,
-          radius: radius,
-          speed: 0.01 + Math.random() * 0.02
-        };
-
-        if (tickerGroupRef.current) {
-          tickerGroupRef.current.add(tickerGroup);
-        }
-      }
-    }
-
     // Create holographic grid lines
     function createHolographicGrid() {
       const gridSize = 50;
@@ -370,7 +242,6 @@ const Interactive3DHero: React.FC = () => {
 
     // Initialize all systems
     createParticleSystem();
-    createStockTicker();
     createHolographicGrid();
 
     function createCandlestick(colorHex: number, bodyHeight: number, wickHeight: number = 0.35) {
@@ -552,31 +423,6 @@ const Interactive3DHero: React.FC = () => {
         particles.rotation.y += 0.001;
       }
 
-      // Stock ticker animation
-      if (tickerGroupRef.current) {
-        tickerGroupRef.current.children.forEach((ticker: any) => {
-          ticker.userData.angle += ticker.userData.speed;
-          const basePos = ticker.userData.basePosition;
-          ticker.position.x = Math.cos(ticker.userData.angle) * ticker.userData.radius;
-          ticker.position.z = Math.sin(ticker.userData.angle) * ticker.userData.radius;
-          ticker.position.y = basePos.y + Math.sin(t * 0.5 + ticker.userData.angle) * 2;
-          ticker.rotation.y = ticker.userData.angle + Math.PI;
-          
-          // Add pointer interaction
-          const distanceToPointer = Math.sqrt(
-            Math.pow(ticker.position.x - pointer.x * 10, 2) + 
-            Math.pow(ticker.position.z - pointer.y * 10, 2)
-          );
-          
-          if (distanceToPointer < 5) {
-            ticker.scale.setScalar(1.2);
-            ticker.position.y += 1;
-          } else {
-            ticker.scale.setScalar(1);
-          }
-        });
-      }
-
       renderer.render(scene, camera);
       animationRef.current = requestAnimationFrame(animate);
     }
@@ -625,52 +471,23 @@ const Interactive3DHero: React.FC = () => {
         style={{ background: 'linear-gradient(180deg, #071028, #000)' }}
       />
       
-      {/* Live Stock Ticker */}
-      <div className="absolute top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-cyan-400/30">
-        <div className="flex items-center overflow-hidden">
-          {/* Live badge */}
-          <div className="ml-2 mr-2 flex items-center gap-2">
-            <div className="px-2 py-0.5 text-[10px] sm:text-xs rounded bg-green-500/15 border border-green-400/30 text-green-300 whitespace-nowrap">
-              Live (delayed)
-            </div>
-            {lastUpdated && (
-              <div className="text-[10px] sm:text-xs text-gray-300 whitespace-nowrap">
-                Updated: {lastUpdated}
-              </div>
-            )}
-          </div>
-          <div className="flex animate-scroll text-white text-sm font-mono">
-            {stockData.length === 0 && (
-              <div className="flex items-center mx-8 whitespace-nowrap">
-                <span className="text-cyan-400 font-bold mr-2">Loading</span>
-                <span className="text-white mr-1">—</span>
-                <span className="text-green-400">Fetching live quotes…</span>
-              </div>
-            )}
-            {stockData.map((stock, index) => (
-              <div key={index} className="flex items-center mx-8 whitespace-nowrap">
-                <span className="text-cyan-400 font-bold mr-2">{stock.symbol}</span>
-                <span className="text-white mr-1">{stock.price > 0 ? `₹${stock.price.toFixed(2)}` : '—'}</span>
-                <span className={`${stock.change >= 0 ? 'text-green-400' : 'text-red-400'} flex items-center`}>
-                  {stock.change >= 0 ? '↗' : '↘'} {Math.abs(stock.change).toFixed(2)}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Overlay content */}
       <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
         <div className="text-center text-white">
           <h1 className="text-6xl lg:text-8xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-green-400 to-purple-400 bg-clip-text text-transparent animate-pulse">
             Wealth Genius
           </h1>
-          <p className="text-2xl lg:text-3xl text-gray-300 mb-8 max-w-4xl mx-auto px-4">
-            Master the Stock Market with Interactive 3D Trading Patterns
+          <p className="text-2xl lg:text-3xl text-gray-300 mb-4 max-w-4xl mx-auto px-4">
+            Master Stock Market Trading in India
+          </p>
+          <p className="text-lg lg:text-xl text-gray-400 mb-8 max-w-3xl mx-auto px-4">
+            Learn from Expert Traders | Live Market Sessions | Real Trading Strategies
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pointer-events-auto">
-            <button className="bg-gradient-to-r from-blue-500 to-green-500 text-white px-8 py-4 rounded-lg font-bold text-lg hover:from-blue-600 hover:to-green-600 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 transform hover:scale-105">
+            <button 
+              onClick={() => navigate('/courses')}
+              className="bg-gradient-to-r from-blue-500 to-green-500 text-white px-8 py-4 rounded-lg font-bold text-lg hover:from-blue-600 hover:to-green-600 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 transform hover:scale-105"
+            >
               Start Learning
             </button>
             <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105">

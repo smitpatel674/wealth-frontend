@@ -371,20 +371,6 @@ const Home = () => {
         );
       });
 
-      // Market Widget Animations REMOVED to show data immediately
-
-      // Add data flow animation to market widgets
-      gsap.utils.toArray('.market-widget').forEach((widget: any) => {
-        gsap.to(widget, {
-          boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)",
-          duration: 2,
-          ease: "power2.inOut",
-          yoyo: true,
-          repeat: -1,
-          stagger: 0.5
-        });
-      });
-
       // Magnetic button effect
       gsap.utils.toArray('.magnetic-btn').forEach((btn: any) => {
         btn.addEventListener('mousemove', (e: MouseEvent) => {
@@ -547,9 +533,9 @@ const Home = () => {
       <section ref={statsRef} className="py-20 bg-blue-900 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-800 to-blue-900"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-centfer mb-12">
-            <h2 className="reveal-text text-4xl font-bold text-white mb-4">Trusted by Thousands of Traders</h2>
-            <p className="reveal-text text-xl text-blue-200">Real results from real students</p>
+          <div className="text-center mb-12">
+            <h2 className="reveal-text text-4xl font-bold text-white mb-4">Trusted by Aspiring Traders Across India</h2>
+            <p className="reveal-text text-xl text-blue-200">Real Trading Education | Real Results | Real Success Stories</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
@@ -588,10 +574,11 @@ const Home = () => {
       <section ref={featuresRef} className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="reveal-text text-5xl font-bold text-blue-900 mb-6">Why Wealth Genius Leads the Industry</h2>
+            <h2 className="reveal-text text-5xl font-bold text-blue-900 mb-6">Why Choose Wealth Genius for Trading Education</h2>
             <p className="reveal-text text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              We combine cutting-edge technology with proven trading strategies to deliver 
-              an unmatched learning experience that transforms beginners into profitable traders.
+              We provide comprehensive stock market training with live trading sessions, expert mentorship, 
+              and practical strategies specifically designed for the Indian stock market. Transform from a beginner 
+              to a confident trader with our proven curriculum.
             </p>
           </div>
 
@@ -601,19 +588,19 @@ const Home = () => {
                 <BookOpen className="h-8 w-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-800 mb-4">Expert-Led Training</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">Learn from Wall Street veterans with decades of trading experience and proven track records.</p>
+              <p className="text-gray-600 mb-6 leading-relaxed">Learn from experienced traders who have successfully navigated the Indian stock market with years of practical trading experience.</p>
               <ul className="space-y-3">
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Live trading sessions daily
+                  Live market trading sessions
                 </li>
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Personal 1-on-1 mentoring
+                  Personal mentorship & guidance
                 </li>
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Real-time market analysis
+                  Real-time NSE & BSE analysis
                 </li>
               </ul>
             </div>
@@ -622,20 +609,20 @@ const Home = () => {
               <div className="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-2xl w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <TrendingUp className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">Advanced Trading Platform</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">Practice with our state-of-the-art simulator using real market data before risking real money.</p>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Practical Trading Education</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">Hands-on learning with real market scenarios, live chart analysis, and practical trading strategies for Indian markets.</p>
               <ul className="space-y-3">
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Paper trading with $100K virtual
+                  Live market analysis & chart reading
                 </li>
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Advanced charting tools
+                  Technical & fundamental analysis
                 </li>
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Risk management features
+                  Futures & Options trading strategies
                 </li>
               </ul>
             </div>
@@ -644,20 +631,20 @@ const Home = () => {
               <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-4 rounded-2xl w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <Users className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">Vibrant Community</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">Join thousands of traders sharing strategies, insights, and supporting each other's success.</p>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Supportive Learning Community</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">Join a community of traders learning together, sharing market insights, and supporting each other's trading journey.</p>
               <ul className="space-y-3">
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Private Discord community
+                  Active trading community
                 </li>
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Weekly group coaching calls
+                  Regular doubt-solving sessions
                 </li>
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Peer-to-peer learning network
+                  Lifetime access to resources
                 </li>
               </ul>
             </div>
@@ -666,20 +653,20 @@ const Home = () => {
               <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-4 rounded-2xl w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <Shield className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">Risk Management Focus</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">Master the art of protecting your capital with proven risk management strategies.</p>
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Capital Protection & Risk Management</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">Learn essential risk management techniques to protect your capital and trade safely in volatile Indian markets.</p>
               <ul className="space-y-3">
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Position sizing strategies
+                  Position sizing & money management
                 </li>
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Stop-loss optimization
+                  Stop-loss & target strategies
                 </li>
                 <li className="flex items-center text-sm text-gray-600">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-                  Portfolio diversification
+                  Trading psychology & discipline
                 </li>
               </ul>
             </div>
@@ -735,10 +722,10 @@ const Home = () => {
       <section ref={coursesRef} className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold text-blue-900 mb-6">Most Popular Courses</h2>
+            <h2 className="text-5xl font-bold text-blue-900 mb-6">Our Comprehensive Trading Courses</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Start your trading journey with our most sought-after courses, designed by industry experts 
-              and proven by thousands of successful students.
+              From stock market fundamentals to advanced derivatives trading - master the complete trading journey 
+              with our structured courses designed for the Indian stock market.
             </p>
           </div>
 
@@ -804,8 +791,9 @@ const Home = () => {
             <div>
               <h2 className="text-5xl font-bold text-blue-900 mb-8">Why 95% of Our Students Succeed</h2>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Our proven methodology combines theoretical knowledge with practical application, 
-                ensuring you develop real-world trading skills that generate consistent profits.
+                Our comprehensive training approach combines market theory with live trading practice, 
+                real market analysis, and expert mentorship. Learn to trade confidently in NSE, BSE, 
+                and MCX markets with strategies that actually work.
               </p>
 
               <div className="space-y-6">
@@ -1108,10 +1096,11 @@ const Home = () => {
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="cta-content text-center">
-            <h2 className="text-6xl font-bold text-white mb-6">Ready to Transform Your Financial Future?</h2>
+            <h2 className="text-6xl font-bold text-white mb-6">Ready to Master Stock Market Trading?</h2>
             <p className="text-2xl text-blue-100 mb-8 max-w-4xl mx-auto leading-relaxed">
-              Join thousands of successful traders who started their journey with Wealth Genius. 
-              Take the first step towards financial independence today.
+              Start your trading journey with Wealth Genius today. Learn from expert traders, 
+              practice with real market scenarios, and build the skills to trade confidently in Indian stock markets. 
+              Your path to financial success starts here.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
             <button 
